@@ -70,7 +70,7 @@ export default function TeamCalendar({
       }}
       buttonText={{ today: "Today", month: "Month", week: "Week", list: "List" }}
       height="auto"
-      firstDay={1}
+      firstDay={0}
       fixedWeekCount={false}
       dayMaxEventRows={4}
       events={events}
