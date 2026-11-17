@@ -220,3 +220,35 @@ Send `name`, `color`, or both.
 
 Removes the member **and all of their vacations** (cascade delete). The web UI shows how many
 vacations will be deleted and asks for confirmation first.
+
+## Deploying to Vercel
+
+Production runs as two Vercel projects from this repo, plus a Prisma Postgres database:
+
+| Vercel project  | Root directory | URL                              |
+| --------------- | -------------- | -------------------------------- |
+| `vaclendar`     | `apps/web`     | https://vaclendar.vercel.app     |
+| `vaclendar-api` | `apps/api`     | https://vaclendar-api.vercel.app |
+
+Each app has a `vercel.json` with its build command. Every push to `main` deploys both apps.
+
+- **Database:** Prisma Postgres, added to the `vaclendar-api` project from the Vercel
+  Marketplace (Storage → Prisma Postgres). That sets `DATABASE_URL` automatically.
+- **Migrations:** the API's production build runs `prisma migrate deploy` before `next build`,
+  so new migrations in `packages/db/prisma/migrations` are applied on deploy.
+- **API previews are off:** only `main` deploys the API (`git.deploymentEnabled`), so no preview
+  build can migrate or write to the production database. Web previews still build, but CORS only
+  allows the production web URL, so they can't call the API.
+
+Environment variables:
+
+| Project         | Variable              | Value                                  |
+| --------------- | --------------------- | -------------------------------------- |
+| `vaclendar-api` | `DATABASE_URL`        | Set by the Prisma Postgres integration |
+| `vaclendar-api` | `CORS_ORIGIN`         | `https://vaclendar.vercel.app`         |
+| `vaclendar`     | `NEXT_PUBLIC_API_URL` | `https://vaclendar-api.vercel.app`     |
+
+`NEXT_PUBLIC_API_URL` is baked into the web build, so redeploy the web app after changing it.
+
+To load the demo data into production (this **deletes all existing data**), pull the production
+`DATABASE_URL` into `packages/db/.env` and run `npm run db:seed`.

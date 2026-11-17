@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && if [ \"$VERCEL_ENV\" = \"production\" ]; then npm run db:deploy; fi && npx turbo run build --filter=@vaclendar/api",
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true
+    }
+  }
+}

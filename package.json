@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "db:generate": "npm run db:generate -w @vaclendar/db",
     "db:migrate": "npm run db:migrate -w @vaclendar/db",
-    "db:seed": "npm run db:seed -w @vaclendar/db"
+    "db:seed": "npm run db:seed -w @vaclendar/db",
+    "db:deploy": "npm run db:deploy -w @vaclendar/db"
   },
   "devDependencies": {
     "prettier": "3.10.1",
