@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "@vaclendar/ui/styles.css";
+
+/* Scan the shared component package for Tailwind classes. */
+@source "../../../../packages/ui/src";
+
+/* ---------- FullCalendar theme, mapped onto the design tokens ---------- */
+.fc {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--background);
+  --fc-neutral-bg-color: var(--muted);
+  --fc-neutral-text-color: var(--muted-foreground);
+  --fc-today-bg-color: color-mix(in oklch, var(--primary) 8%, transparent);
+  --fc-highlight-color: color-mix(in oklch, var(--primary) 18%, transparent);
+  --fc-list-event-hover-bg-color: var(--muted);
+  --fc-event-border-color: transparent;
+  --fc-small-font-size: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.fc .fc-toolbar {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 1rem;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.fc .fc-button {
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.fc .fc-button:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.fc .fc-button:focus,
+.fc .fc-button-primary:not(:disabled):active:focus,
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 40%, transparent);
+}
+
+.fc .fc-button:disabled {
+  opacity: 0.5;
+}
+
+.fc .fc-col-header-cell-cushion {
+  padding: 0.5rem 0.25rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+
+.fc .fc-daygrid-day-number {
+  width: 100%;
+  padding: 0.25rem 0.375rem;
+}
+
+.fc .fc-daygrid-event {
+  border-radius: 0.3rem;
+  padding: 0.0625rem 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fc .fc-list-event {
+  cursor: pointer;
+}
+
+.fc .fc-daygrid-day-frame {
+  min-height: 5.5rem;
+}
+
+/* Non-vacation types get a subtle diagonal stripe so they stand out. */
+.fc .vac-type-sick,
+.fc .vac-type-public-holiday,
+.fc .vac-type-other {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgb(255 255 255 / 0.18) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+@media (max-width: 640px) {
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+  }
+  .fc .fc-daygrid-day-frame {
+    min-height: 4rem;
+  }
+  .fc .fc-daygrid-event {
+    font-size: 0.6875rem;
+  }
+}

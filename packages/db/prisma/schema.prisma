@@ -1,0 +1,42 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = ""
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VacationType {
+  VACATION
+  SICK
+  PUBLIC_HOLIDAY
+  OTHER
+}
+
+model Member {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  color     String
+  createdAt DateTime   @default(now())
+  vacations Vacation[]
+}
+
+model Vacation {
+  id        String       @id @default(cuid())
+  memberId  String
+  member    Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  /// Whole day, inclusive. Stored as DATE so timezones cannot shift it.
+  startDate DateTime     @db.Date
+  /// Whole day, inclusive. Stored as DATE so timezones cannot shift it.
+  endDate   DateTime     @db.Date
+  type      VacationType @default(VACATION)
+  note      String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([startDate, endDate])
+  @@index([memberId])
+}

@@ -1,0 +1,7 @@
+node_modules
+.next
+.turbo
+package-lock.json
+packages/db/src/generated
+packages/db/prisma/migrations
+vaclendar-prompt.md
