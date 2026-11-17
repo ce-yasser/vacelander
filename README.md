@@ -234,6 +234,11 @@ Each app has a `vercel.json` with its build command. Every push to `main` deploy
 
 - **Database:** Prisma Postgres, added to the `vaclendar-api` project from the Vercel
   Marketplace (Storage → Prisma Postgres). That sets `DATABASE_URL` automatically.
+- **Region:** the database is in Frankfurt, and both apps run their server code in Frankfurt
+  too (`"regions": ["fra1"]` in each `vercel.json`), so API calls to the database stay short.
+  Static pages and assets are served from Vercel's global CDN.
+- **Connections:** at runtime the API uses the integration's pooled `DATABASE_URL_POOLED`
+  (falling back to `DATABASE_URL`). Migrations use the direct `DATABASE_URL`.
 - **Migrations:** the API's production build runs `prisma migrate deploy` before `next build`,
   so new migrations in `packages/db/prisma/migrations` are applied on deploy.
 - **API previews are off:** only `main` deploys the API (`git.deploymentEnabled`), so no preview
@@ -242,11 +247,11 @@ Each app has a `vercel.json` with its build command. Every push to `main` deploy
 
 Environment variables:
 
-| Project         | Variable              | Value                                  |
-| --------------- | --------------------- | -------------------------------------- |
-| `vaclendar-api` | `DATABASE_URL`        | Set by the Prisma Postgres integration |
-| `vaclendar-api` | `CORS_ORIGIN`         | `https://vaclendar.vercel.app`         |
-| `vaclendar`     | `NEXT_PUBLIC_API_URL` | `https://vaclendar-api.vercel.app`     |
+| Project         | Variable                              | Value                                  |
+| --------------- | ------------------------------------- | -------------------------------------- |
+| `vaclendar-api` | `DATABASE_URL`, `DATABASE_URL_POOLED` | Set by the Prisma Postgres integration |
+| `vaclendar-api` | `CORS_ORIGIN`                         | `https://vaclendar.vercel.app`         |
+| `vaclendar`     | `NEXT_PUBLIC_API_URL`                 | `https://vaclendar-api.vercel.app`     |
 
 `NEXT_PUBLIC_API_URL` is baked into the web build, so redeploy the web app after changing it.
 

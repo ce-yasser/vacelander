@@ -3,60 +3,32 @@
   "ui": "stream",
   "globalPassThroughEnv": [
     "DATABASE_URL",
+    "DATABASE_URL_POOLED",
     "DATABASE_POOL_MAX",
     "CORS_ORIGIN"
   ],
   "tasks": {
     "db:generate": {
-      "inputs": [
-        "prisma/schema.prisma",
-        "prisma.config.ts"
-      ],
-      "outputs": [
-        "src/generated/**"
-      ]
+      "inputs": ["prisma/schema.prisma", "prisma.config.ts"],
+      "outputs": ["src/generated/**"]
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "db:generate",
-        "^db:generate"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ],
-      "env": [
-        "NEXT_PUBLIC_API_URL"
-      ]
+      "dependsOn": ["^build", "db:generate", "^db:generate"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NEXT_PUBLIC_API_URL"]
     },
     "lint": {
-      "dependsOn": [
-        "db:generate",
-        "^db:generate"
-      ]
+      "dependsOn": ["db:generate", "^db:generate"]
     },
     "typecheck": {
-      "dependsOn": [
-        "db:generate",
-        "^db:generate"
-      ]
+      "dependsOn": ["db:generate", "^db:generate"]
     },
     "test": {
-      "dependsOn": [
-        "db:generate",
-        "^db:generate"
-      ]
+      "dependsOn": ["db:generate", "^db:generate"]
     },
     "dev": {
-      "dependsOn": [
-        "db:generate",
-        "^db:generate"
-      ],
+      "dependsOn": ["db:generate", "^db:generate"],
       "cache": false,
       "persistent": true
     }

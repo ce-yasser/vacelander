@@ -1,12 +1,12 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
-import { databaseUrl } from "./env";
+import { runtimeDatabaseUrl } from "./env";
 
 const globalForPrisma = globalThis as unknown as { __vaclendarPrisma?: PrismaClient };
 
 function createClient(): PrismaClient {
   const adapter = new PrismaPg({
-    connectionString: databaseUrl(),
+    connectionString: runtimeDatabaseUrl(),
     // Serverless functions each hold their own pool, so keep it small to stay
     // within the database's connection limit.
     max: Number(process.env.DATABASE_POOL_MAX) || 5,
