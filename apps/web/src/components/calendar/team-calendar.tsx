@@ -5,6 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import multiMonthPlugin from "@fullcalendar/multimonth";
 import type {
   DateSelectArg,
   DatesSetArg,
@@ -34,7 +35,7 @@ export default function TeamCalendar({
   onVacationClick,
 }: TeamCalendarProps) {
   const [initialView] = useState(() =>
-    window.matchMedia("(max-width: 640px)").matches ? "listMonth" : "dayGridMonth",
+    window.matchMedia("(max-width: 640px)").matches ? "listMonth" : "twoMonths",
   );
   const events = useMemo(() => vacations.map(toCalendarEvent), [vacations]);
   const offByDay = useMemo(() => peopleOffByDay(vacations), [vacations]);
@@ -45,11 +46,12 @@ export default function TeamCalendar({
       <div className="flex w-full items-center justify-between gap-1">
         {names.length > 1 ? (
           <span
-            className="rounded-full bg-foreground/85 px-1.5 py-px text-[0.6875rem] leading-4 font-semibold text-background"
+            className="vac-off-badge rounded-full bg-foreground/85 px-1.5 py-px text-[0.6875rem] leading-4 font-semibold whitespace-nowrap text-background"
             title={`${names.length} people off: ${names.join(", ")}`}
             aria-label={`${names.length} people off`}
           >
-            {names.length} off
+            {names.length}
+            <span className="vac-off-suffix"> off</span>
           </span>
         ) : (
           <span />
@@ -61,12 +63,23 @@ export default function TeamCalendar({
 
   return (
     <FullCalendar
-      plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
+      plugins={[dayGridPlugin, multiMonthPlugin, listPlugin, interactionPlugin]}
       initialView={initialView}
       headerToolbar={{
         left: "prev,next today",
         center: "title",
-        right: "dayGridMonth,dayGridWeek,listMonth",
+        right: "twoMonths,dayGridMonth,dayGridWeek,listMonth",
+      }}
+      views={{
+        // Two months side by side; prev/next step one month at a time.
+        twoMonths: {
+          type: "multiMonth",
+          duration: { months: 2 },
+          dateIncrement: { months: 1 },
+          multiMonthMaxColumns: 2,
+          multiMonthMinWidth: 320,
+          buttonText: "2 Months",
+        },
       }}
       buttonText={{ today: "Today", month: "Month", week: "Week", list: "List" }}
       height="auto"

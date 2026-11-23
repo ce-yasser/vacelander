@@ -118,3 +118,40 @@
     font-size: 0.6875rem;
   }
 }
+
+/* ---------- Two-month (multiMonth) view ---------- */
+.fc .fc-multimonth {
+  border: none;
+}
+
+.fc .fc-multimonth-month {
+  padding: 0 0.5rem 1rem;
+}
+
+.fc .fc-multimonth-title {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.25rem 0 0.75rem;
+}
+
+.fc .fc-multimonth-daygrid {
+  background: var(--background);
+}
+
+.fc .fc-multimonth .fc-daygrid-day-frame {
+  min-height: 4.5rem;
+}
+
+/* multiMonth uses fixed-height ("balanced") rows; let cells grow with their events instead. */
+.fc .fc-multimonth .fc-daygrid-body-balanced .fc-daygrid-day-events {
+  position: relative;
+}
+
+/* Cells are narrower here, so the "N off" badge shows just the count. */
+.fc .fc-multimonth .vac-off-suffix {
+  display: none;
+}
+
+.fc .fc-multimonth .fc-daygrid-day-number {
+  padding: 0.25rem;
+}
